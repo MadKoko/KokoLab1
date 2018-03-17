@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 public class ShowProfile extends AppCompatActivity {
 
-    ///Ciao
+    ///Ciao2
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
