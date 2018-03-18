@@ -71,8 +71,18 @@
                     android:inputType="phone" />
 
                 <EditText
-                    android:id="@+id/edit_user_bio"
+                    android:id="@+id/edit_user_location"
                     android:layout_below="@+id/edit_user_phone"
+                    android:layout_gravity="bottom"
+                    android:text="@string/user_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="text" />
+
+                <EditText
+                    android:id="@+id/edit_user_bio"
+                    android:layout_below="@+id/edit_user_location"
                     android:layout_gravity="bottom"
                     android:text="@string/user_bio"
                     android:layout_width="match_parent"
