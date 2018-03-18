@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">KokoLab1</string>
     <string name="user_name">User_Name</string>
-    <string name="user_surname">User_Surname</string>
+    <string name="user_email">User_Email</string>
     <string name="user_location">User_Location</string>
     <string name="user_bio">User_Bio</string>
     <string name="user_photo_desc">User photo</string>
+    <string name="edit_button_label">Edit</string>
 </resources>
