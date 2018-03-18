@@ -5,8 +5,6 @@ import android.os.Bundle;
 
 public class ShowProfile extends AppCompatActivity {
 
-    ///Ciao2
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
