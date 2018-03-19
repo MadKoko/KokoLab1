@@ -30,9 +30,23 @@
                     android:contentDescription="@string/user_photo_desc"
                     android:src="@mipmap/ic_launcher_round" />
 
+                <ImageButton
+                    android:id="@+id/user_photo_button"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/user_photo"
+                    android:layout_gravity="bottom"
+                    android:layout_alignParentTop="false"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentRight="true"
+                    android:background="#ffffff"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/user_photo_desc"
+                    android:src="@mipmap/camera_icon" />
+
                 <EditText
                     android:id="@+id/edit_user_name"
-                    android:layout_below="@+id/user_photo"
+                    android:layout_below="@+id/user_photo_button"
                     android:layout_gravity="bottom"
                     android:text="@string/user_name"
                     android:layout_width="match_parent"
