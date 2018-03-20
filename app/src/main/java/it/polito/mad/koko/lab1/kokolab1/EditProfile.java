@@ -5,10 +5,14 @@ package it.polito.mad.koko.lab1.kokolab1;
  */
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,10 +22,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import static android.app.PendingIntent.getActivity;
 import static android.hardware.SensorManager.getOrientation;
 
 public class EditProfile extends AppCompatActivity{
@@ -34,7 +43,9 @@ public class EditProfile extends AppCompatActivity{
     private static Bitmap Image = null;
     private static Bitmap rotateImage = null;
     private static final int GALLERY = 1;
+    private static final int CAMERA_REQUEST = 0;
     private static Uri myImageUri;
+    private static String user_photo_profile=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,20 +71,18 @@ public class EditProfile extends AppCompatActivity{
             et_email.setText(user_email);
             et_location.setText(user_location);
             et_bio.setText(user_bio);
+
+            if(i.getStringExtra("user_photo_uri")!=null){
+                String user_photo_uri=i.getStringExtra("user_photo_uri");
+                Picasso.get().load(myImageUri).fit().centerCrop().into((ImageView)findViewById(R.id.user_photo));
+            }
         }
 
         ImageButton user_photo_button = findViewById(R.id.user_photo_button);
         user_photo_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (Image != null)
-                    Image.recycle();
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY);
-
+                startDialog();
             }
         });
 
@@ -89,7 +98,10 @@ public class EditProfile extends AppCompatActivity{
                 i.putExtra("user_email", et_email.getText().toString() );
                 i.putExtra("user_location", et_location.getText().toString() );
                 i.putExtra("user_bio", et_bio.getText().toString() );
-                i.putExtra("uri", myImageUri.toString());
+
+                if(user_photo_profile!=null) {
+                    i.putExtra("uri", myImageUri.toString());
+                }
                 setResult(RESULT_OK, i);
 
                 finish();
@@ -99,38 +111,117 @@ public class EditProfile extends AppCompatActivity{
 
     }
 
+    private void startDialog() {
+        AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
+        myAlertDialog.setTitle("Select Profile Picture");
+
+        myAlertDialog.setPositiveButton("Gallery",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                        Intent pictureActionIntent = null;
+                        pictureActionIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(pictureActionIntent, GALLERY);
+
+                    }
+                });
+
+        myAlertDialog.setNegativeButton("Camera",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+
+                        startActivityForResult(intent, CAMERA_REQUEST);
+
+                    }
+                });
+        myAlertDialog.show();
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == GALLERY && resultCode != 0) {
             myImageUri = data.getData();
-            try {
-                Image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), myImageUri);
-                ImageView user_photo=findViewById(R.id.user_photo);
-                user_photo.setImageBitmap(Image);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            ImageView user_photo=findViewById(R.id.user_photo);
+            Picasso.get().load(myImageUri).fit().centerCrop().into(user_photo);
+            user_photo_profile=myImageUri.toString();
+
+        }
+        if (requestCode == CAMERA_REQUEST && resultCode != 0) {
+
+            Bitmap bitmap = null;
+            String selectedImagePath = null;
+
+            File f = new File(Environment.getExternalStorageDirectory()
+                    .toString());
+            for (File temp : f.listFiles()) {
+                if (temp.getName().equals("temp.jpg")) {
+                    f = temp;
+                    break;
+                }
             }
+
+            if (!f.exists()) {
+
+                Toast.makeText(getBaseContext(),
+
+                        "Error while capturing image", Toast.LENGTH_LONG)
+
+                        .show();
+
+                return;
+
+            }
+
+            myImageUri=Uri.fromFile(f);
+
+            ImageView user_photo=findViewById(R.id.user_photo);
+            Picasso.get().load(myImageUri).fit().centerCrop().into(user_photo);
+            user_photo_profile=myImageUri.toString();
         }
     }
 
-   /* @Override
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("user_name",et_name.getText().toString());
-        outState.putString("user_email", et_email.getText().toString());
-        outState.putString("user_location", et_location.getText().toString());
-        outState.putString("user_bio", et_bio.getText().toString());
+
+        TextView tv_name=findViewById(R.id.edit_user_name);
+        TextView tv_email=findViewById(R.id.edit_user_email);
+        TextView tv_location=findViewById(R.id.edit_user_location);
+        TextView tv_bio=findViewById(R.id.edit_user_bio);
+
+        outState.putString("user_name",tv_name.getText().toString());
+        outState.putString("user_email", tv_email.getText().toString());
+        outState.putString("user_location", tv_location.getText().toString());
+        outState.putString("user_bio", tv_bio.getText().toString());
+
+        if(user_photo_profile!=null){
+            outState.putString("user_photo",myImageUri.toString());
+        }
+
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        et_name.setText(savedInstanceState.getString("user_name"));
-        et_email.setText(savedInstanceState.getString("user_email"));
-        et_location.setText(savedInstanceState.getString("user_location"));
-        et_bio.setText(savedInstanceState.getString("user_bio"));
 
-    }*/
+        TextView tv_name=findViewById(R.id.edit_user_name);
+        TextView tv_email=findViewById(R.id.edit_user_email);
+        TextView tv_location=findViewById(R.id.edit_user_location);
+        TextView tv_bio=findViewById(R.id.edit_user_bio);
+
+        tv_name.setText(savedInstanceState.getString("user_name"));
+        tv_email.setText(savedInstanceState.getString("user_email"));
+        tv_location.setText(savedInstanceState.getString("user_location"));
+        tv_bio.setText(savedInstanceState.getString("user_bio"));
+
+        if(savedInstanceState.getString("user_photo")!=null){
+            Picasso.get().load(savedInstanceState.getString("user_photo")).fit().centerCrop().into((ImageView)findViewById(R.id.user_photo));
+        }
+    }
+
 }

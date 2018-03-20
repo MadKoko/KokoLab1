@@ -2,6 +2,7 @@ package it.polito.mad.koko.lab1.kokolab1;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,6 +24,7 @@ public class ShowProfile extends AppCompatActivity {
     String saved_user_email;
     String saved_user_location;
     String saved_user_bio;*/
+    private static String user_photo_uri=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,11 @@ public class ShowProfile extends AppCompatActivity {
             tv_email.setText(savedInstanceState.getString("user_email"));
             tv_location.setText(savedInstanceState.getString("user_location"));
             tv_bio.setText(savedInstanceState.getString("user_bio"));
+
+            if(user_photo_uri!=null){
+                Picasso.get().load(user_photo_uri).fit().centerCrop().into((ImageView)findViewById(R.id.user_photo));
+            }
+
         }
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -57,46 +66,17 @@ public class ShowProfile extends AppCompatActivity {
                 i.putExtra("user_email", tv_email.getText().toString() );
                 i.putExtra("user_location", tv_location.getText().toString() );
                 i.putExtra("user_bio", tv_bio.getText().toString() );
+
+                if(user_photo_uri!=null){
+                    i.putExtra("user_photo_uri",user_photo_uri);
+                }
+
                 startActivityForResult(i,1);
             }
         });
 
     }
 
-    /*@Override
-    protected void onPause() {
-        super.onPause();
-        Bundle outState=getIntent().getExtras();
-        TextView tv_name=findViewById(R.id.user_name);
-        TextView tv_email=findViewById(R.id.user_email);
-        TextView tv_location=findViewById(R.id.user_location);
-        TextView tv_bio=findViewById(R.id.user_bio);
-
-        outState.putString("user_name",tv_name.getText().toString());
-        outState.putString("user_email", tv_email.getText().toString());
-        outState.putString("user_location", tv_location.getText().toString());
-        outState.putString("user_bio", tv_bio.getText().toString());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-
-        Bundle savedInstanceState=getIntent().getExtras();
-
-        TextView tv_name=findViewById(R.id.user_name);
-        TextView tv_email=findViewById(R.id.user_email);
-        TextView tv_location=findViewById(R.id.user_location);
-        TextView tv_bio=findViewById(R.id.user_bio);
-
-        tv_name.setText(savedInstanceState.getString("user_name"));
-        tv_email.setText(savedInstanceState.getString("user_email"));
-        tv_location.setText(savedInstanceState.getString("user_location"));
-        tv_bio.setText(savedInstanceState.getString("user_bio"));
-
-    }
-*/
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -110,6 +90,11 @@ public class ShowProfile extends AppCompatActivity {
         outState.putString("user_email", tv_email.getText().toString());
         outState.putString("user_location", tv_location.getText().toString());
         outState.putString("user_bio", tv_bio.getText().toString());
+
+        if(user_photo_uri!=null){
+            outState.putString("user_photo",user_photo_uri);
+        }
+
     }
 
     @Override
@@ -126,6 +111,9 @@ public class ShowProfile extends AppCompatActivity {
         tv_location.setText(savedInstanceState.getString("user_location"));
         tv_bio.setText(savedInstanceState.getString("user_bio"));
 
+        if(savedInstanceState.getString("user_photo")!=null){
+            Picasso.get().load(savedInstanceState.getString("user_photo")).fit().centerCrop().into((ImageView)findViewById(R.id.user_photo));
+        }
     }
 
     @Override
@@ -149,16 +137,12 @@ public class ShowProfile extends AppCompatActivity {
             tv_location.setText(user_location);
             tv_bio.setText(user_bio);
 
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(data.getStringExtra("uri")));
-                ImageView user_photo=findViewById(R.id.user_photo);
-                user_photo.setImageBitmap(bitmap);
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if(data.getStringExtra("uri")!=null) {
+                user_photo_uri=data.getStringExtra("uri");
+                ImageView user_photo = findViewById(R.id.user_photo);
+                Picasso.get().load(user_photo_uri).fit().centerCrop().into(user_photo);
             }
+
 
         }
 
