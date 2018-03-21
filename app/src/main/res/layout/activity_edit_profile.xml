@@ -42,7 +42,7 @@
                     android:background="#ffffff"
                     android:scaleType="fitCenter"
                     android:contentDescription="@string/user_photo_desc"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:src="@mipmap/camera_icon" />
 
                 <EditText
                     android:id="@+id/edit_user_name"

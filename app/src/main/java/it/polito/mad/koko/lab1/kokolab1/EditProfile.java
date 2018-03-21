@@ -76,7 +76,8 @@ public class EditProfile extends AppCompatActivity{
 
             if(i.getStringExtra("user_photo_uri")!=null){
                 String user_photo_uri=i.getStringExtra("user_photo_uri");
-                Picasso.get().load(myImageUri).fit().centerCrop().into((ImageView)findViewById(R.id.user_photo));
+                ImageView user_photo = (ImageView) findViewById(R.id.user_photo);
+                Picasso.get().load(myImageUri).into(user_photo);
             }
         }
 
@@ -149,7 +150,7 @@ public class EditProfile extends AppCompatActivity{
         if (requestCode == GALLERY && resultCode != 0) {
             myImageUri = data.getData();
             ImageView user_photo=findViewById(R.id.user_photo);
-            Picasso.get().load(myImageUri).fit().centerCrop().into(user_photo);
+            Picasso.get().load(myImageUri).into(user_photo);
             user_photo_profile=myImageUri.toString();
 
         }
@@ -182,7 +183,7 @@ public class EditProfile extends AppCompatActivity{
             myImageUri=Uri.fromFile(f);
 
             ImageView user_photo=findViewById(R.id.user_photo);
-            Picasso.get().load(myImageUri).fit().centerCrop().into(user_photo);
+            Picasso.get().load(myImageUri).into(user_photo);
             user_photo_profile=myImageUri.toString();
         }
     }
@@ -222,7 +223,8 @@ public class EditProfile extends AppCompatActivity{
         tv_bio.setText(savedInstanceState.getString("user_bio"));
 
         if(savedInstanceState.getString("user_photo")!=null){
-            Picasso.get().load(savedInstanceState.getString("user_photo")).fit().centerCrop().into((ImageView)findViewById(R.id.user_photo));
+            ImageView user_photo = (ImageView) findViewById(R.id.user_photo);
+            Picasso.get().load(savedInstanceState.getString("user_photo")).into(user_photo);
         }
     }
 
