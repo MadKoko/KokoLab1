@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_name">Nome_Utente</string>
+    <string name="user_password">Password_Utente</string>
+    <string name="user_email">Email_Utente</string>
+    <string name="user_phone">Telefono_Utente</string>
+    <string name="user_location">Posizione_Utente</string>
+    <string name="user_bio">Biografia_Utente</string>
+    <string name="user_photo_desc">Fotografia_Utente</string>
+    <string name="edit_button_label">Modifica</string>
+    <string name="save_button_label">Salva</string>
+</resources>
