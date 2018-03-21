@@ -35,13 +35,11 @@ import static android.hardware.SensorManager.getOrientation;
 
 public class EditProfile extends AppCompatActivity{
 
-    // Test Marco
-
-   /* private EditText et_name;
+    /*private EditText et_name;
     private EditText et_email;
     private EditText et_location;
-    private EditText et_bio;
-*/
+    private EditText et_bio;*/
+
     private static Bitmap Image = null;
     private static Bitmap rotateImage = null;
     private static final int GALLERY = 1;

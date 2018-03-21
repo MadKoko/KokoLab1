@@ -27,7 +27,7 @@
                     android:layout_height="150dp"
                     android:layout_alignParentTop="false"
                     android:layout_centerHorizontal="true"
-                    android:contentDescription="@string/user_photo_desc"
+                    android:contentDescription="@string/user_profile_pic"
                     android:src="@mipmap/ic_launcher_round" />
 
                 <ImageButton
@@ -41,14 +41,14 @@
                     android:layout_alignParentRight="true"
                     android:background="#ffffff"
                     android:scaleType="fitCenter"
-                    android:contentDescription="@string/user_photo_desc"
-                    android:src="@mipmap/camera_icon" />
+                    android:contentDescription="@string/user_profile_pic"
+                    android:src="@mipmap/ic_launcher_round" />
 
                 <EditText
                     android:id="@+id/edit_user_name"
                     android:layout_below="@+id/user_photo_button"
                     android:layout_gravity="bottom"
-                    android:text="@string/user_name"
+                    android:hint="@string/user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -58,7 +58,7 @@
                     android:id="@+id/edit_user_password"
                     android:layout_below="@+id/edit_user_name"
                     android:layout_gravity="bottom"
-                    android:text="@string/user_password"
+                    android:hint="@string/user_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -68,7 +68,7 @@
                     android:id="@+id/edit_user_email"
                     android:layout_below="@+id/edit_user_password"
                     android:layout_gravity="bottom"
-                    android:text="@string/user_email"
+                    android:hint="@string/user_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -78,7 +78,7 @@
                     android:id="@+id/edit_user_phone"
                     android:layout_below="@+id/edit_user_email"
                     android:layout_gravity="bottom"
-                    android:text="@string/user_phone"
+                    android:hint="@string/user_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -88,7 +88,7 @@
                     android:id="@+id/edit_user_location"
                     android:layout_below="@+id/edit_user_phone"
                     android:layout_gravity="bottom"
-                    android:text="@string/user_location"
+                    android:hint="@string/user_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -98,7 +98,7 @@
                     android:id="@+id/edit_user_bio"
                     android:layout_below="@+id/edit_user_location"
                     android:layout_gravity="bottom"
-                    android:text="@string/user_bio"
+                    android:hint="@string/user_bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"

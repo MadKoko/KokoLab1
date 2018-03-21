@@ -53,7 +53,6 @@ public class ShowProfile extends AppCompatActivity {
             if(user_photo_uri!=null){
                 Picasso.get().load(user_photo_uri).into((ImageView)findViewById(R.id.user_photo));
             }
-
         }
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -142,9 +141,7 @@ public class ShowProfile extends AppCompatActivity {
                 ImageView user_photo = findViewById(R.id.user_photo);
                 Picasso.get().load(user_photo_uri).into(user_photo);
             }
-
-
         }
-
     }
+
 }

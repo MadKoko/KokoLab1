@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="user_name">Nome_Utente</string>
-    <string name="user_password">Password_Utente</string>
-    <string name="user_email">Email_Utente</string>
-    <string name="user_phone">Telefono_Utente</string>
-    <string name="user_location">Posizione_Utente</string>
-    <string name="user_bio">Biografia_Utente</string>
-    <string name="user_photo_desc">Fotografia_Utente</string>
+    <string name="show_profile">Profilo</string>
+    <string name="edit_profile">Modifica il profilo</string>
+    <string name="user_name">Nome utente</string>
+    <string name="user_password">Password</string>
+    <string name="user_email">E-mail</string>
+    <string name="user_phone">Telefono</string>
+    <string name="user_location">Posizione</string>
+    <string name="user_bio">Biografia</string>
+    <string name="user_profile_pic">Immagine del profilo</string>
     <string name="edit_button_label">Modifica</string>
     <string name="save_button_label">Salva</string>
-    <!--Questo è un commento per github-->
 </resources>
