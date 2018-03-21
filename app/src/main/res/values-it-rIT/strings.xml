@@ -9,4 +9,5 @@
     <string name="user_photo_desc">Fotografia_Utente</string>
     <string name="edit_button_label">Modifica</string>
     <string name="save_button_label">Salva</string>
+    <!--Questo è un commento per github-->
 </resources>
