@@ -120,8 +120,7 @@ public class EditProfile extends AppCompatActivity{
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
 
-                        Intent pictureActionIntent = null;
-                        pictureActionIntent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        Intent pictureActionIntent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                         startActivityForResult(pictureActionIntent, GALLERY);
 
                     }
@@ -146,6 +145,7 @@ public class EditProfile extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == GALLERY && resultCode != 0) {
+
             myImageUri = data.getData();
             ImageView user_photo=findViewById(R.id.user_photo);
             Picasso.get().load(myImageUri).fit().centerCrop().into(user_photo);
