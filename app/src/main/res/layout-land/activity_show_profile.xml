@@ -6,6 +6,7 @@
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:text="@string/edit_button_label"
         />
@@ -15,12 +16,12 @@
         android:id="@+id/cv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/edit_button"
-        >
+        android:layout_below="@+id/edit_button">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentLeft="@id/edit_button"
             android:layout_alignParentStart="@id/edit_button">
 
             <ImageView
@@ -38,6 +39,7 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_toEndOf="@id/user_photo"
                 android:layout_toRightOf="@id/user_photo"
                 android:padding="8dp">
 

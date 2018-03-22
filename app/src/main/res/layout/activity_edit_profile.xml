@@ -27,7 +27,6 @@
                     android:layout_height="150dp"
                     android:layout_alignParentTop="false"
                     android:layout_centerHorizontal="true"
-                    android:contentDescription="@string/user_profile_pic"
                     android:src="@mipmap/ic_launcher_round" />
 
                 <ImageButton
@@ -41,14 +40,13 @@
                     android:layout_alignParentRight="true"
                     android:background="#ffffff"
                     android:scaleType="fitCenter"
-                    android:contentDescription="@string/user_profile_pic"
-                    android:src="@mipmap/ic_launcher_round" />
+                    android:src="@mipmap/camera_icon" />
 
                 <EditText
                     android:id="@+id/edit_user_name"
                     android:layout_below="@+id/user_photo_button"
                     android:layout_gravity="bottom"
-                    android:hint="@string/user_name"
+                    android:text="@string/user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -58,7 +56,7 @@
                     android:id="@+id/edit_user_password"
                     android:layout_below="@+id/edit_user_name"
                     android:layout_gravity="bottom"
-                    android:hint="@string/user_password"
+                    android:text="@string/user_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -68,7 +66,7 @@
                     android:id="@+id/edit_user_email"
                     android:layout_below="@+id/edit_user_password"
                     android:layout_gravity="bottom"
-                    android:hint="@string/user_email"
+                    android:text="@string/user_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -78,7 +76,7 @@
                     android:id="@+id/edit_user_phone"
                     android:layout_below="@+id/edit_user_email"
                     android:layout_gravity="bottom"
-                    android:hint="@string/user_phone"
+                    android:text="@string/user_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -88,7 +86,7 @@
                     android:id="@+id/edit_user_location"
                     android:layout_below="@+id/edit_user_phone"
                     android:layout_gravity="bottom"
-                    android:hint="@string/user_location"
+                    android:text="@string/user_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -98,7 +96,7 @@
                     android:id="@+id/edit_user_bio"
                     android:layout_below="@+id/edit_user_location"
                     android:layout_gravity="bottom"
-                    android:hint="@string/user_bio"
+                    android:text="@string/user_bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"

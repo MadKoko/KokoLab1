@@ -51,7 +51,7 @@ public class ShowProfile extends AppCompatActivity {
             tv_bio.setText(savedInstanceState.getString("user_bio"));
 
             if(user_photo_uri!=null){
-                Picasso.get().load(user_photo_uri).into((ImageView)findViewById(R.id.user_photo));
+                Picasso.get().load(user_photo_uri).fit().centerCrop().into((ImageView)findViewById(R.id.user_photo));
             }
         }
 
@@ -111,7 +111,7 @@ public class ShowProfile extends AppCompatActivity {
         tv_bio.setText(savedInstanceState.getString("user_bio"));
 
         if(savedInstanceState.getString("user_photo")!=null){
-            Picasso.get().load(savedInstanceState.getString("user_photo")).into((ImageView)findViewById(R.id.user_photo));
+            Picasso.get().load(savedInstanceState.getString("user_photo")).fit().centerCrop().into((ImageView)findViewById(R.id.user_photo));
         }
     }
 
@@ -139,7 +139,7 @@ public class ShowProfile extends AppCompatActivity {
             if(data.getStringExtra("uri")!=null) {
                 user_photo_uri=data.getStringExtra("uri");
                 ImageView user_photo = findViewById(R.id.user_photo);
-                Picasso.get().load(user_photo_uri).into(user_photo);
+                Picasso.get().load(user_photo_uri).fit().centerCrop().into(user_photo);
             }
         }
     }
