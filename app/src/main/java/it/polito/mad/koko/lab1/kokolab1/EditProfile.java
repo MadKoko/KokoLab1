@@ -55,6 +55,7 @@ public class EditProfile extends AppCompatActivity{
     private EditText et_email;
     private EditText et_location;
     private EditText et_bio;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +88,17 @@ public class EditProfile extends AppCompatActivity{
                 Picasso.get().load(myImageUri).fit().centerCrop().into(user_photo);
             }
         }
+        sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+
+        ImageView user_photo = findViewById(R.id.user_photo);
+
+        if(sharedPreferences.getString("user_photo",null)==null){
+            Picasso.get().load(R.mipmap.ic_launcher_round).fit().centerCrop().into(user_photo);
+        }
+
+        else
+            Picasso.get().load(sharedPreferences.getString("user_photo",null)).fit().centerCrop().into(user_photo);
+
 
         ImageButton user_photo_button = findViewById(R.id.user_photo_button);
         user_photo_button.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +126,7 @@ public class EditProfile extends AppCompatActivity{
                 }
                 setResult(RESULT_OK, i);*/
 
-                SharedPreferences sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+                sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 editor.putString("user_name", et_name.getText().toString());
@@ -253,7 +265,7 @@ public class EditProfile extends AppCompatActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+        sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
 
         et_name.setText(sharedPreferences.getString("user_name",null));
         et_email.setText(sharedPreferences.getString("user_email",null));
@@ -262,12 +274,13 @@ public class EditProfile extends AppCompatActivity{
 
         ImageView user_photo = findViewById(R.id.user_photo);
 
-       if(sharedPreferences.getString("user_photo",null)==null){
+       /*if(sharedPreferences.getString("user_photo",null)==null){
             Picasso.get().load(R.mipmap.ic_launcher_round).fit().centerCrop().into(user_photo);
         }
 
         else
             Picasso.get().load(sharedPreferences.getString("user_photo",null)).fit().centerCrop().into(user_photo);
+            */
     }
 
 }
