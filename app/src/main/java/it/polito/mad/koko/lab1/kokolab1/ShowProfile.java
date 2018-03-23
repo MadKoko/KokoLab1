@@ -177,7 +177,14 @@ public class ShowProfile extends AppCompatActivity {
 
         ImageView user_photo = findViewById(R.id.user_photo);
 
-        Picasso.get().load(sharedPreferences.getString("user_photo",null)).fit().centerCrop().into(user_photo);
+        if(sharedPreferences.getString("user_photo",null)==null){
+            Picasso.get().load(R.mipmap.ic_launcher_round).fit().centerCrop().into(user_photo);
+        }
+
+        else
+            Picasso.get().load(sharedPreferences.getString("user_photo",null)).fit().centerCrop().into(user_photo);
+
+
     }
 
 
