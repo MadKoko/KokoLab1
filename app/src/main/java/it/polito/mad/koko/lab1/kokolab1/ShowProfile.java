@@ -1,12 +1,15 @@
 package it.polito.mad.koko.lab1.kokolab1;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +22,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 
 public class ShowProfile extends AppCompatActivity {
@@ -28,10 +32,11 @@ public class ShowProfile extends AppCompatActivity {
     String saved_user_location;
     String saved_user_bio;*/
     private static String user_photo_uri=null;
-    TextView tv_name;
-    TextView tv_email;
-    TextView tv_location;
-    TextView tv_bio;
+    private TextView tv_name;
+    private TextView tv_email;
+    private TextView tv_location;
+    private TextView tv_bio;
+    private String MY_PREFS_NAME="MySharedPreferences";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +49,9 @@ public class ShowProfile extends AppCompatActivity {
         tv_location=findViewById(R.id.user_location);
         tv_bio=findViewById(R.id.user_bio);
 
-        if(savedInstanceState!=null) {
+        /*if(savedInstanceState!=null) {
+
+            Log.d("debug",savedInstanceState.toString());
             tv_name.setText(savedInstanceState.getString("user_name"));
             tv_email.setText(savedInstanceState.getString("user_email"));
             tv_location.setText(savedInstanceState.getString("user_location"));
@@ -53,17 +60,12 @@ public class ShowProfile extends AppCompatActivity {
             if(user_photo_uri!=null){
                 Picasso.get().load(user_photo_uri).fit().centerCrop().into((ImageView)findViewById(R.id.user_photo));
             }
-        }
+        }*/
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-        TextView tv_name=findViewById(R.id.user_name);
-        TextView tv_email=findViewById(R.id.user_email);
-        TextView tv_location=findViewById(R.id.user_location);
-        TextView tv_bio=findViewById(R.id.user_bio);
 
         outState.putString("user_name",tv_name.getText().toString());
         outState.putString("user_email", tv_email.getText().toString());
@@ -79,11 +81,6 @@ public class ShowProfile extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-
-        TextView tv_name=findViewById(R.id.user_name);
-        TextView tv_email=findViewById(R.id.user_email);
-        TextView tv_location=findViewById(R.id.user_location);
-        TextView tv_bio=findViewById(R.id.user_bio);
 
         tv_name.setText(savedInstanceState.getString("user_name"));
         tv_email.setText(savedInstanceState.getString("user_email"));
@@ -105,11 +102,6 @@ public class ShowProfile extends AppCompatActivity {
             String user_email=data.getStringExtra("user_email");
             String user_location=data.getStringExtra("user_location");
             String user_bio=data.getStringExtra("user_bio");
-
-            TextView tv_name=findViewById(R.id.user_name);
-            TextView tv_email=findViewById(R.id.user_email);
-            TextView tv_location=findViewById(R.id.user_location);
-            TextView tv_bio=findViewById(R.id.user_bio);
 
             tv_name.setText(user_name);
             tv_email.setText(user_email);
@@ -153,6 +145,39 @@ public class ShowProfile extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+   /* @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("user_name", tv_name.getText().toString());
+        editor.putString("user_email", tv_email.getText().toString());
+        editor.putString("user_location", tv_location.getText().toString());
+        editor.putString("user_bio", tv_bio.getText().toString());
+
+        if(user_photo_uri!=null)
+            editor.putString("user_photo",user_photo_uri);
+        editor.commit();
+
+    }*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+
+        tv_name.setText(sharedPreferences.getString("user_name",null));
+        tv_email.setText(sharedPreferences.getString("user_email",null));
+        tv_location.setText(sharedPreferences.getString("user_location",null));
+        tv_bio.setText(sharedPreferences.getString("user_bio",null));
+
+        ImageView user_photo = findViewById(R.id.user_photo);
+
+        Picasso.get().load(sharedPreferences.getString("user_photo",null)).fit().centerCrop().into(user_photo);
     }
 
 

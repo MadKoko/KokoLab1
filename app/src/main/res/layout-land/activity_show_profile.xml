@@ -43,7 +43,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:text="@string/user_name"
+                        android:hint="@string/user_name"
                         android:textSize="20sp" />
 
 
@@ -53,7 +53,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/user_name"
                         android:layout_gravity="bottom"
-                        android:text="@string/user_email"
+                        android:hint="@string/user_email"
                         android:textSize="20sp" />
 
                     <TextView
@@ -62,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/user_email"
                         android:layout_gravity="bottom"
-                        android:text="@string/user_location"
+                        android:hint="@string/user_location"
                         android:textSize="20sp" />
 
                     <TextView
@@ -71,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/user_location"
                         android:layout_gravity="bottom"
-                        android:text="@string/user_bio"
+                        android:hint="@string/user_bio"
                         android:textSize="20sp" />
                 </RelativeLayout>
             </ScrollView>

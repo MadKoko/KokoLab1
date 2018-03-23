@@ -6,8 +6,10 @@ package it.polito.mad.koko.lab1.kokolab1;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -47,6 +49,12 @@ public class EditProfile extends AppCompatActivity{
     private static final int CAMERA_REQUEST = 0;
     private static Uri myImageUri;
     private static String user_photo_profile=null;
+    private String MY_PREFS_NAME="MySharedPreferences";
+
+    private EditText et_name;
+    private EditText et_email;
+    private EditText et_location;
+    private EditText et_bio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +65,10 @@ public class EditProfile extends AppCompatActivity{
 
         Intent i=getIntent();
 
-        final EditText et_name=findViewById(R.id.edit_user_name);
-        final EditText et_email=findViewById(R.id.edit_user_email);
-        final EditText et_location=findViewById(R.id.edit_user_location);
-        final EditText et_bio=findViewById(R.id.edit_user_bio);
+        et_name=findViewById(R.id.edit_user_name);
+        et_email=findViewById(R.id.edit_user_email);
+        et_location=findViewById(R.id.edit_user_location);
+        et_bio=findViewById(R.id.edit_user_bio);
 
         if(i.getExtras()!=null){
             String user_name=i.getStringExtra("user_name");
@@ -95,7 +103,7 @@ public class EditProfile extends AppCompatActivity{
             public void onClick(View v) {
                 // TODO Auto-generated method stub
 
-                Intent i = new Intent();
+               /* Intent i = new Intent();
                 i.putExtra("user_name", et_name.getText().toString() );
                 i.putExtra("user_email", et_email.getText().toString() );
                 i.putExtra("user_location", et_location.getText().toString() );
@@ -104,7 +112,19 @@ public class EditProfile extends AppCompatActivity{
                 if(user_photo_profile!=null) {
                     i.putExtra("uri", myImageUri.toString());
                 }
-                setResult(RESULT_OK, i);
+                setResult(RESULT_OK, i);*/
+
+                SharedPreferences sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                editor.putString("user_name", et_name.getText().toString());
+                editor.putString("user_email", et_email.getText().toString());
+                editor.putString("user_location", et_location.getText().toString());
+                editor.putString("user_bio", et_bio.getText().toString());
+
+                if(myImageUri!=null)
+                    editor.putString("user_photo",myImageUri.toString());
+                editor.commit();
 
                 finish();
 
@@ -227,6 +247,21 @@ public class EditProfile extends AppCompatActivity{
             ImageView user_photo = (ImageView) findViewById(R.id.user_photo);
             Picasso.get().load(savedInstanceState.getString("user_photo")).fit().centerCrop().into(user_photo);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+
+        et_name.setText(sharedPreferences.getString("user_name",null));
+        et_email.setText(sharedPreferences.getString("user_email",null));
+        et_location.setText(sharedPreferences.getString("user_location",null));
+        et_bio.setText(sharedPreferences.getString("user_bio",null));
+
+        ImageView user_photo = findViewById(R.id.user_photo);
+
+        Picasso.get().load(sharedPreferences.getString("user_photo",null)).fit().centerCrop().into(user_photo);
     }
 
 }
