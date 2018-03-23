@@ -41,8 +41,7 @@
                     android:layout_alignParentRight="true"
                     android:background="#ffffff"
                     android:scaleType="fitCenter"
-
-                    android:src="@mipmap/camera_icon" />
+                    android:src="@android:drawable/ic_menu_camera" />
 
                 <EditText
                     android:id="@+id/edit_user_name"
