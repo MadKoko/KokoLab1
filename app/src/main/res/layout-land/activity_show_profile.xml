@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <Button
+    <!--Button
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:text="@string/edit_button_label"
-        />
+        android:text="@string/edit_button_label" /-->
 
 
     <android.support.v7.widget.CardView
         android:id="@+id/cv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/edit_button">
+        android:layout_below="@+id/edit_button"
+        tools:ignore="UnknownId">
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -7,6 +7,9 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,6 +28,10 @@ public class ShowProfile extends AppCompatActivity {
     String saved_user_location;
     String saved_user_bio;*/
     private static String user_photo_uri=null;
+    TextView tv_name;
+    TextView tv_email;
+    TextView tv_location;
+    TextView tv_bio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +41,7 @@ public class ShowProfile extends AppCompatActivity {
 
         Button button=findViewById(R.id.edit_button);
 
-        final TextView tv_name;
-        final TextView tv_email;
-        final TextView tv_location;
-        final TextView tv_bio;
+
 
         tv_name=findViewById(R.id.user_name);
         tv_email=findViewById(R.id.user_email);
@@ -54,6 +58,15 @@ public class ShowProfile extends AppCompatActivity {
                 Picasso.get().load(user_photo_uri).fit().centerCrop().into((ImageView)findViewById(R.id.user_photo));
             }
         }
+
+
+        /*
+        -- Questo si riferisce al vecchio bottone--
+
+        final TextView tv_name;
+        final TextView tv_email;
+        final TextView tv_location;
+        final TextView tv_bio;
 
         button.setOnClickListener(new View.OnClickListener() {
 
@@ -73,6 +86,7 @@ public class ShowProfile extends AppCompatActivity {
                 startActivityForResult(i,1);
             }
         });
+        */
 
     }
 
@@ -143,5 +157,37 @@ public class ShowProfile extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     * Ho inserito il menu nella barra superiore
+     * @param menu
+     * @return
+     */
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit:
+                Intent i = new Intent(getApplicationContext(), EditProfile.class);
+                i.putExtra("user_name", tv_name.getText().toString());
+                i.putExtra("user_email", tv_email.getText().toString());
+                i.putExtra("user_location", tv_location.getText().toString());
+                i.putExtra("user_bio", tv_bio.getText().toString());
+
+                if (user_photo_uri != null) {
+                    i.putExtra("user_photo_uri", user_photo_uri);
+                }
+
+                startActivityForResult(i, 1);
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
 
 }
