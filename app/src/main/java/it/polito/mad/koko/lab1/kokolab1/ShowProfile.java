@@ -39,10 +39,6 @@ public class ShowProfile extends AppCompatActivity {
 
         setContentView(R.layout.activity_show_profile);
 
-        Button button=findViewById(R.id.edit_button);
-
-
-
         tv_name=findViewById(R.id.user_name);
         tv_email=findViewById(R.id.user_email);
         tv_location=findViewById(R.id.user_location);
@@ -58,36 +54,6 @@ public class ShowProfile extends AppCompatActivity {
                 Picasso.get().load(user_photo_uri).fit().centerCrop().into((ImageView)findViewById(R.id.user_photo));
             }
         }
-
-
-        /*
-        -- Questo si riferisce al vecchio bottone--
-
-        final TextView tv_name;
-        final TextView tv_email;
-        final TextView tv_location;
-        final TextView tv_bio;
-
-        button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(getApplicationContext(),EditProfile.class);
-                i.putExtra("user_name", tv_name.getText().toString() );
-                i.putExtra("user_email", tv_email.getText().toString() );
-                i.putExtra("user_location", tv_location.getText().toString() );
-                i.putExtra("user_bio", tv_bio.getText().toString() );
-
-                if(user_photo_uri!=null){
-                    i.putExtra("user_photo_uri",user_photo_uri);
-                }
-
-                startActivityForResult(i,1);
-            }
-        });
-        */
-
     }
 
     @Override

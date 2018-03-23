@@ -130,6 +130,8 @@ public class EditProfile extends AppCompatActivity{
         myAlertDialog.setNegativeButton("Camera",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
+                        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                        StrictMode.setVmPolicy(builder.build());
 
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
