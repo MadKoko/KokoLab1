@@ -1,23 +1,14 @@
 package it.polito.mad.koko.lab1.kokolab1;
 
-/**
- * Created by Francesco on 18/03/2018.
- */
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,28 +17,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static android.app.PendingIntent.getActivity;
-import static android.hardware.SensorManager.getOrientation;
 
 public class EditProfile extends AppCompatActivity{
 
-    private  Bitmap Image = null;
-    private static Bitmap rotateImage = null;
     private static final int GALLERY = 1;
     private static final int CAMERA_REQUEST = 0;
     private String user_photo_profile;
-    private Uri myImageUri;
 
     private String MY_PREFS_NAME="MySharedPreferences";
 
@@ -57,6 +40,14 @@ public class EditProfile extends AppCompatActivity{
     private EditText et_bio;
     private ImageView user_photo;
     private SharedPreferences sharedPreferences;
+
+    /**
+     * IN ONCREATE METHOD WE SET THE EDIT TEXT AND CREATE THE CONTEXT.
+     * WE TAKE THE CURRENT PICTURE SHOWN IN SHOWPROFILE FROM THE FIELD OF SHARED PREFERENCES "USER_PHOTO_TEMP"
+     * WE SET THE BUTTON "USER_PHOTO_BUTTON" TO TAKE PICTURES , CHOOSING FROM CAMERA OR GALLERY
+     * WE SET THE SAVE BUTTON TO SAVE THE CURRENT MODIFICATIONS IN THE SHARED PREFERENCES
+     *
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +104,13 @@ public class EditProfile extends AppCompatActivity{
 
     }
 
+
+    /**
+     * STARTDIALOG() METHOD CREATE AN ALERTDIALOG TO CHOOSE CAMERA OR GALLERY TO TAKE PICTURES
+     * IF GALLERY: THE IMAGE IS CHOSEN FROM THE ONES SAVED LOCALLY ON THE MOBILE
+     * IF CAMERA: A NEW FILE IS CREATED AND THE PICTURE IS SAVED THERE
+     *
+     */
     private void startDialog() {
         Log.d("debug","startDialog");
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
@@ -154,6 +152,12 @@ public class EditProfile extends AppCompatActivity{
         myAlertDialog.show();
     }
 
+    /**
+     *ONACTIVITYRESULT() METHOD IS CALLED AS THE RESULT OF THE CHOSEN ACTIVITY TO TAKE THE PICTURE
+     * IF GALLERY: THE DATA IS TAKEN FROM THE INTENT AND SET IN THE SHARED PREFERENCES WITH THE KEY "USER_PHOTO_TEMP"
+     * IF CAMERA: THE URI IS TAKEN FROM THE VARIABLE "USER_PHOTO_PROFILE", WHICH IS SET IN THE METHOD "CREATEIMAGEFILE()" AND SET THE SHARED PREFERENCES WITH THE KEY "USER_PHOTO_TEMP"
+     */
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("debug","onActivityResult");
@@ -178,6 +182,10 @@ public class EditProfile extends AppCompatActivity{
 
     }
 
+    /**
+     * ONRESUME() METHOD IS USED TO SET ALL THE VALUES IN THE RIGHT FIELDS, TAKEN FROM SHARED PREFERENCES
+     */
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -196,7 +204,11 @@ public class EditProfile extends AppCompatActivity{
     }
 
 
-    //create image name
+    /**
+     *CREATEIMAGEFILE() METHOD CREATES THE FILE WHERE THE IMAGES TAKEN FROM CAMERA WILL BE STORED.
+     * THE NAME IS COMPOSED BY "JPEG + TIMESTAMP + _"
+     * THE URI IS SAVED IN THE VARIABLE USER_PHOTO_PROFILE
+     */
     private File createImageFile() throws IOException {
         String timeStamp=new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName="JPEG"+timeStamp+"_";
