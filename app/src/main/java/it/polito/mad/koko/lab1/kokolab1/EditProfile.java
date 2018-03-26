@@ -46,7 +46,8 @@ public class EditProfile extends AppCompatActivity{
     private static Bitmap rotateImage = null;
     private static final int GALLERY = 1;
     private static final int CAMERA_REQUEST = 0;
-    private String mCurrentPhotoPath;
+    private String user_photo_profile;
+    private Uri myImageUri;
 
     private String MY_PREFS_NAME="MySharedPreferences";
 
@@ -133,24 +134,19 @@ public class EditProfile extends AppCompatActivity{
                         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                         StrictMode.setVmPolicy(builder.build());
 
-                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        // Ensure that there's a camera activity to handle the intent
-                        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                            // Create the File where the photo should go
-                            File photoFile = null;
-                            try {
-                                photoFile = createImageFile();
-                            } catch (IOException ex) {
-                                // Error occurred while creating the File
-                                Log.d("debug",ex.getMessage());
-                            }
-                            // Continue only if the File was successfully created
-                            if (photoFile != null) {
-                                Log.d("debug",Uri.fromFile(photoFile).toString());
-                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile).toString());
-                                startActivityForResult(takePictureIntent, CAMERA_REQUEST);
-                            }
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        File f=null;
+                        try{
+
+                        f = createImageFile();
+
+                        } catch (IOException ex){
+                            Log.d("debug",ex.getMessage());
                         }
+
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+
+                        startActivityForResult(intent, CAMERA_REQUEST);
 
 
                     }
@@ -173,14 +169,8 @@ public class EditProfile extends AppCompatActivity{
         }
         if (requestCode == CAMERA_REQUEST && resultCode != 0) {
 
-            try {
-                Bitmap image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.parse(mCurrentPhotoPath));
-                user_photo.setImageBitmap(image);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            editor.putString("user_photo_temp",data.getStringExtra("photo_path"));
+            editor.putString("user_photo_temp",user_photo_profile);
+            Log.d("debug",user_photo_profile);
             editor.apply();
 
 
@@ -206,20 +196,16 @@ public class EditProfile extends AppCompatActivity{
     }
 
 
+    //create image name
     private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        String timeStamp=new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName="JPEG"+timeStamp+"_";
+        File storgeDir= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File image=File.createTempFile(imageFileName,".jpg",storgeDir);
+        user_photo_profile="file:"+image.getAbsolutePath();
+        Log.d("debug",user_photo_profile);
         return image;
     }
+
 
 }
