@@ -93,12 +93,11 @@ public class ShowProfile extends AppCompatActivity {
 
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
     /**
-     * Filling all the UI fields retrieving all the nedded information from the
+     * Filling all the UI fields retrieving all the needed information from the
      * sharedPreferences XML file.
      */
     @Override
@@ -114,32 +113,17 @@ public class ShowProfile extends AppCompatActivity {
         tv_location.setText(sharedPreferences.getString("user_location",null));
         tv_bio.setText(sharedPreferences.getString("user_bio",null));
 
-
+        // If there was not a profile pic previously
         if(sharedPreferences.getString("user_photo",null) == null)
+            // Default profile pic
             Picasso.get().load(R.mipmap.ic_launcher_round).fit().centerCrop().into(user_photo);
         else {
+            // Retrieving the previous profile pic URI
             user_photo_uri = sharedPreferences.getString("user_photo", null);
+
+            // Displaying it again
             Picasso.get().load(sharedPreferences.getString("user_photo", null)).fit().centerCrop().into(user_photo);
         }
     }
-
-    /**
-     * ONPAUSE() METHOD SAVES ALL THE CURRENT VALUES IN FIELDS IN SHARED PREFERENCES
-     */
-    /*@Override
-    protected void onPause() {
-        super.onPause();
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putString("user_name", tv_name.getText().toString());
-        editor.putString("user_email", tv_email.getText().toString());
-        editor.putString("user_location", tv_location.getText().toString());
-        editor.putString("user_bio", tv_bio.getText().toString());
-
-        if(user_photo_uri!=null)
-            editor.putString("user_photo",user_photo_uri);
-        editor.apply();
-    }*/
 
 }

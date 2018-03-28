@@ -1,6 +1,5 @@
 package it.polito.mad.koko.lab1.kokolab1;
 
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,53 +24,65 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class EditProfile extends AppCompatActivity{
 
-    private static final int GALLERY = 1;
-    private static final int CAMERA_REQUEST = 0;
+    /**
+     * Profile pic source
+     */
+    private static final int    CAMERA_REQUEST = 0,
+                                GALLERY = 1;
+    /**
+     * Profile pic URI
+     */
     private String user_photo_profile;
 
-    private String MY_PREFS_NAME="MySharedPreferences";
-
-    private EditText et_name;
-    private EditText et_email;
-    private EditText et_location;
-    private EditText et_bio;
-    private ImageView user_photo;
+    /**
+     * User profile data is stored in a shared XML file.
+     */
+    private String MY_PREFS_NAME = "MySharedPreferences";
     private SharedPreferences sharedPreferences;
 
     /**
-     * IN ONCREATE METHOD WE SET THE EDIT TEXT AND CREATE THE CONTEXT.
-     * WE TAKE THE CURRENT PICTURE SHOWN IN SHOWPROFILE FROM THE FIELD OF SHARED PREFERENCES "USER_PHOTO_TEMP"
-     * WE SET THE BUTTON "USER_PHOTO_BUTTON" TO TAKE PICTURES , CHOOSING FROM CAMERA OR GALLERY
-     * WE SET THE SAVE BUTTON TO SAVE THE CURRENT MODIFICATIONS IN THE SHARED PREFERENCES
-     *
+     * User profile data.
      */
+    private EditText et_name;
+    private EditText et_password;
+    private EditText et_email;
+    private EditText et_phone;
+    private EditText et_location;
+    private EditText et_bio;
+    private ImageView user_photo;
 
+    /**
+     * Filling all the UI text fields and the user profile pic with all the
+     * previous values shown in the ShowProfile activity.
+     * It also adds an edit profile pic button and the save button to save
+     * the current modifications in the sharedPreferences XML file.
+     * @param savedInstanceState    activity's previously saved state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
+        // TODO Debugging
         Log.d("debug","onCreate");
 
+        // Loading the XML layout file
         setContentView(R.layout.activity_edit_profile);
 
+        // Restoring UI fields containing user info
         et_name=findViewById(R.id.edit_user_name);
+        et_password=findViewById(R.id.edit_user_password);
         et_email=findViewById(R.id.edit_user_email);
+        et_phone=findViewById(R.id.edit_user_phone);
         et_location=findViewById(R.id.edit_user_location);
         et_bio=findViewById(R.id.edit_user_bio);
 
+        // Restore the profile pic from the sharedPreferences data structure
         sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
-
-        et_name.setText(sharedPreferences.getString("user_name",null));
-        et_email.setText(sharedPreferences.getString("user_email",null));
-        et_location.setText(sharedPreferences.getString("user_location",null));
-        et_bio.setText(sharedPreferences.getString("user_bio",null));
-
         user_photo= findViewById(R.id.user_photo);
 
+        // Edit profile pic button
         ImageButton user_photo_button = findViewById(R.id.user_photo_button);
         user_photo_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +91,7 @@ public class EditProfile extends AppCompatActivity{
             }
         });
 
+        // Save button
         Button save_button = findViewById(R.id.save_button);
         save_button.setOnClickListener(new View.OnClickListener() {
 
@@ -88,136 +100,175 @@ public class EditProfile extends AppCompatActivity{
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
+                // Saving all UI fields values in the sharedPreferences XML file.
                 editor.putString("user_name", et_name.getText().toString());
+                editor.putString("user_password", et_password.getText().toString());
                 editor.putString("user_email", et_email.getText().toString());
+                editor.putString("user_phone", et_phone.getText().toString());
                 editor.putString("user_location", et_location.getText().toString());
                 editor.putString("user_bio", et_bio.getText().toString());
-
-
                 editor.putString("user_photo",sharedPreferences.getString("user_photo_temp",null));
                 editor.apply();
 
+                // Terminating the activity
                 finish();
-
             }
         });
-
     }
 
-
     /**
-     * STARTDIALOG() METHOD CREATE AN ALERTDIALOG TO CHOOSE CAMERA OR GALLERY TO TAKE PICTURES
-     * IF GALLERY: THE IMAGE IS CHOSEN FROM THE ONES SAVED LOCALLY ON THE MOBILE
-     * IF CAMERA: A NEW FILE IS CREATED AND THE PICTURE IS SAVED THERE
-     *
+     * It displays an alert dialog by which the user can choose the camera or the gallery
+     * to take his/her new profile pic.
      */
     private void startDialog() {
+        // TODO debugging
         Log.d("debug","startDialog");
+
+        // Alert dialog showing the two possibilities: camera or gallery
+        // TODO Implement a context-menu instead, with custom style
         AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
         myAlertDialog.setTitle("Select Profile Picture");
 
+        // 'From gallery' option
         myAlertDialog.setPositiveButton("Gallery",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int arg1) {
+                Intent pictureActionIntent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 
-                        Intent pictureActionIntent = new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                        startActivityForResult(pictureActionIntent, GALLERY);
-
-                    }
+                // Launching the camera app
+                startActivityForResult(pictureActionIntent, GALLERY);
+            }
                 });
 
+        // 'From camera' option
         myAlertDialog.setNegativeButton("Camera",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                        StrictMode.setVmPolicy(builder.build());
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface arg0, int arg1) {
+                    // Requested from Android 7.0 Nougat
+                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                    StrictMode.setVmPolicy(builder.build());
 
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        File f=null;
-                        try{
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                        f = createImageFile();
+                    // Saving the image file into the file system
+                    File f = createImageFile();
 
-                        } catch (IOException ex){
-                            Log.d("debug",ex.getMessage());
-                        }
+                    // The image file couldn't be created
+                    if(f == null)
+                        // The camera app won't be launched
+                        return;
 
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
 
-                        startActivityForResult(intent, CAMERA_REQUEST);
+                    // Launching the camera app
+                    startActivityForResult(intent, CAMERA_REQUEST);
+                }
+            });
 
-
-                    }
-                });
+        // Showing the alert dialog
         myAlertDialog.show();
     }
 
     /**
-     *ONACTIVITYRESULT() METHOD IS CALLED AS THE RESULT OF THE CHOSEN ACTIVITY TO TAKE THE PICTURE
-     * IF GALLERY: THE DATA IS TAKEN FROM THE INTENT AND SET IN THE SHARED PREFERENCES WITH THE KEY "USER_PHOTO_TEMP"
-     * IF CAMERA: THE URI IS TAKEN FROM THE VARIABLE "USER_PHOTO_PROFILE", WHICH IS SET IN THE METHOD "CREATEIMAGEFILE()" AND SET THE SHARED PREFERENCES WITH THE KEY "USER_PHOTO_TEMP"
+     * Upon taking a picture with the camera, it saves the image file. following
+     * @return  the image file.
      */
+    private File createImageFile() {
+        // Timestamp format
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("debug","onActivityResult");
+        // Filename format: 'JPEG' + timestamp + '_'
+        String imageFileName="JPEG"+timeStamp+"_";
 
-        sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // Pictures directory
+        File storgeDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-        if (requestCode == GALLERY && resultCode != 0) {
-
-            editor.putString("user_photo_temp",data.getData().toString());
-            editor.apply();
-
+        // Trying to create the image file
+        File imageFile = null;
+        try {
+            // Image file creation
+            imageFile = File.createTempFile(imageFileName,".jpg",storgeDir);
         }
-        if (requestCode == CAMERA_REQUEST && resultCode != 0) {
+        // The image cannot be created
+        catch(IOException e) {
+            // Creating an alert dialog indicating all possible causes
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditProfile.this);
+            builder .setMessage(R.string.image_file_creation_error_message)
+                    .setTitle(R.string.image_file_creation_error_title)
+                    .setIcon(android.R.drawable.ic_dialog_alert);
 
-            editor.putString("user_photo_temp",user_photo_profile);
-            Log.d("debug",user_photo_profile);
-            editor.apply();
+            // Showing the dialog to the screen
+            AlertDialog dialog = builder.create();
+            dialog.show();
 
-
+            return null;
         }
 
+        // Saving the new profile pic
+        user_photo_profile = "file:"+imageFile.getAbsolutePath();
+
+        // TODO debugging
+        Log.d("debug", user_photo_profile);
+
+        // Returning the image file created
+        return imageFile;
     }
 
     /**
-     * ONRESUME() METHOD IS USED TO SET ALL THE VALUES IN THE RIGHT FIELDS, TAKEN FROM SHARED PREFERENCES
+     * Called as a result of the new profile picture activity, whether it is taken from
+     * the camera or from the gallery.
+     * @param requestCode   where the profile pic has been acquired.
+     * @param resultCode    whether the operation has been performed successfully or not.
+     * @param data          an Intent that carries the result data.
      */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO debugging
+        Log.d("debug","onActivityResult");
 
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // If the photo has been picked from the gallery
+        if(requestCode == GALLERY && resultCode != RESULT_CANCELED) {
+            editor.putString("user_photo_temp", data.getData().toString());
+            editor.apply();
+        }
+
+        // If the photo has been taken with the camera
+        if(requestCode == CAMERA_REQUEST && resultCode != RESULT_CANCELED) {
+            editor.putString("user_photo_temp", user_photo_profile);
+
+            // TODO debugging
+            Log.d("debug",user_photo_profile);
+
+            editor.apply();
+        }
+    }
+
+    /**
+     * Filling all the UI fields retrieving all the needed information from the
+     * sharedPreferences XML file.
+     */
     @Override
     protected void onResume() {
         super.onResume();
+
+        // TODO debugging
         Log.d("debug", "onResume");
 
+        // Updating the sharedPreferences data structure containing user info
+        sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+
+        // Restoring all UI values
         et_name.setText(sharedPreferences.getString("user_name", null));
+        et_password.setText(sharedPreferences.getString("user_password", null));
         et_email.setText(sharedPreferences.getString("user_email", null));
+        et_phone.setText(sharedPreferences.getString("user_phone", null));
         et_location.setText(sharedPreferences.getString("user_location", null));
         et_bio.setText(sharedPreferences.getString("user_bio", null));
 
-        sharedPreferences=getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
-
+        // Restoring the profile picture
         Picasso.get().load(sharedPreferences.getString("user_photo_temp", null)).fit().centerCrop().into(user_photo);
-
-
     }
-
-
-    /**
-     *CREATEIMAGEFILE() METHOD CREATES THE FILE WHERE THE IMAGES TAKEN FROM CAMERA WILL BE STORED.
-     * THE NAME IS COMPOSED BY "JPEG + TIMESTAMP + _"
-     * THE URI IS SAVED IN THE VARIABLE USER_PHOTO_PROFILE
-     */
-    private File createImageFile() throws IOException {
-        String timeStamp=new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName="JPEG"+timeStamp+"_";
-        File storgeDir= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File image=File.createTempFile(imageFileName,".jpg",storgeDir);
-        user_photo_profile="file:"+image.getAbsolutePath();
-        Log.d("debug",user_photo_profile);
-        return image;
-    }
-
 
 }

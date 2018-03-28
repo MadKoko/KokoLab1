@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- UI -->
     <string name="show_profile">Profilo</string>
     <string name="edit_profile">Modifica il profilo</string>
     <string name="user_name">Nome utente</string>
@@ -9,6 +9,16 @@
     <string name="user_location">Posizione</string>
     <string name="user_bio">Biografia</string>
     <string name="user_profile_pic">Immagine del profilo</string>
+
+    <!-- Buttons -->
     <string name="edit_button_label">Modifica</string>
     <string name="save_button_label">Salva</string>
+
+    <!--    No image file can be created after taking a picture
+            with the camera -->
+    <string name="image_file_creation_error_title">Impossibile salvare la foto</string>
+    <string name="image_file_creation_error_message">
+        Svuota la memoria del tuo dispositivo e controlla i permessi
+        di questa applicazione nelle Impostazioni.
+    </string>
 </resources>
