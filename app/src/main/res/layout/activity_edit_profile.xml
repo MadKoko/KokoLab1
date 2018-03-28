@@ -27,7 +27,6 @@
                     android:layout_height="150dp"
                     android:layout_alignParentTop="false"
                     android:layout_centerHorizontal="true"
-
                     android:src="@mipmap/ic_launcher_round" />
 
                 <ImageButton
@@ -43,93 +42,120 @@
                     android:scaleType="fitCenter"
                     android:src="@android:drawable/ic_menu_camera" />
 
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/text_input_name"
-                    android:layout_below="@+id/user_photo_button"
+                    android:layout_below="@id/user_photo_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:hint="@string/user_name"
+                    android:ems="10"
+                    android:hint="@string/user_name">
+
+                    <EditText
+                        android:id="@+id/edit_user_name"
+                        android:layout_gravity="bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/text_user_password"
+                    android:layout_below="@id/text_input_name"
+                    android:layout_gravity="bottom"
+                    android:hint="@string/user_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10">
 
                     <EditText
-                        android:id="@+id/edit_user_name"
-                        android:inputType="textPersonName"
+                        android:id="@+id/edit_user_password"
+                        android:layout_gravity="bottom"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword" />
 
                 </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/edit_user_password"
-                    android:layout_below="@+id/text_input_name"
-                    android:layout_gravity="bottom"
-                    android:hint="@string/user_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPassword" />
-
-                <EditText
-                    android:id="@+id/edit_user_email"
-                    android:layout_below="@+id/edit_user_password"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/text_user_email"
+                    android:layout_below="@+id/text_user_password"
                     android:layout_gravity="bottom"
                     android:hint="@string/user_email"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textEmailAddress" />
+                    android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/edit_user_phone"
-                    android:layout_below="@+id/edit_user_email"
+                    <EditText
+                        android:id="@+id/edit_user_email"
+                        android:layout_gravity="bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/text_user_phone"
+                    android:layout_below="@+id/text_user_email"
                     android:layout_gravity="bottom"
                     android:hint="@string/user_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="phone" />
+                    android:ems="10">
+                    <EditText
+                        android:id="@+id/edit_user_phone"
+                        android:layout_gravity="bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone" />
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/edit_user_location"
-                    android:layout_below="@+id/edit_user_phone"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/text_user_location"
+                    android:layout_below="@+id/text_user_phone"
                     android:layout_gravity="bottom"
                     android:hint="@string/user_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="text" />
-
+                    android:inputType="text">
                 <EditText
-                    android:id="@+id/edit_user_bio"
-                    android:layout_below="@+id/edit_user_location"
+                    android:id="@+id/edit_user_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/text_user_bio"
+                    android:layout_below="@+id/text_user_location"
                     android:layout_gravity="bottom"
                     android:hint="@string/user_bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                >
+                    <EditText
+                    android:id="@+id/edit_user_bio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:inputType="textMultiLine" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_gravity="bottom"
-                    android:padding="8dp">
+                </android.support.design.widget.TextInputLayout>
 
                     <Button
                         android:id="@+id/save_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
+                        android:layout_below="@id/text_user_bio"
+                        android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
+
                         android:text="@string/save_button_label" />
 
-                </RelativeLayout>
 
-            </RelativeLayout>
+                </RelativeLayout>
 
         </ScrollView>
     </android.support.v7.widget.CardView>
