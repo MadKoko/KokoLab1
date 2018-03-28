@@ -38,80 +38,75 @@
                     android:padding="16dp">
 
 
-                    <android.support.design.widget.TextInputLayout
+                    <TextView
                         android:id="@+id/text_name"
+                        android:layout_marginTop="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/user_photo"
                         android:layout_gravity="bottom"
                         android:hint="@string/user_name"
-                        android:textSize="20sp" >
+                        android:textSize="10sp" />
 
-
-                        <TextView
-                            android:id="@+id/user_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/user_name"
-                            android:textSize="20sp" />
-
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-
-                        android:id="@+id/text_email"
+                    <TextView
+                        android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/text_name"
                         android:layout_gravity="bottom"
+                        android:hint="@string/user_name"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/text_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/user_name"
+                        android:layout_gravity="bottom"
                         android:hint="@string/user_email"
-                        android:textSize="20sp">
+                        android:textSize="10sp" />
 
-                        <TextView
-                            android:id="@+id/user_email"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/user_email"
-                            android:textSize="20sp" />
-
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/text_location"
+                    <TextView
+                        android:id="@+id/user_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/text_email"
+                        android:hint="@string/user_email"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/text_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/user_email"
                         android:layout_gravity="bottom"
                         android:hint="@string/user_location"
-                        android:textSize="20sp">
+                        android:textSize="10sp" />
 
-                        <TextView
-                            android:id="@+id/user_location"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/user_location"
-                            android:textSize="20sp" />
-
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-
-                        android:id="@+id/text_bio"
+                    <TextView
+                        android:id="@+id/user_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/text_location"
+                        android:hint="@string/user_location"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/text_bio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/user_location"
                         android:layout_gravity="bottom"
                         android:hint="@string/user_bio"
-                        android:textSize="20sp">
+                        android:textSize="10sp" />
 
-                        <TextView
-                            android:id="@+id/user_bio"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/user_bio"
-                            android:textSize="20sp" />
+                    <TextView
+                        android:id="@+id/user_bio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/text_bio"
+                        android:hint="@string/user_bio"
+                        android:textSize="20sp" />
 
-                    </android.support.design.widget.TextInputLayout>
 
                 </RelativeLayout>
             </ScrollView>
