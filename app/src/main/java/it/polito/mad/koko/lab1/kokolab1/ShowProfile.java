@@ -38,7 +38,7 @@ public class ShowProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Loading XML layout file
+        // Loading the XML layout file
         setContentView(R.layout.activity_show_profile);
 
         // Restoring UI fields containing user info
