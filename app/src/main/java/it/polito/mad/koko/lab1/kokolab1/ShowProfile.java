@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -105,7 +106,7 @@ public class ShowProfile extends AppCompatActivity {
         super.onResume();
 
         // Updating the sharedPreferences data structure containing user info
-        sharedPreferences = getApplicationContext().getSharedPreferences(MY_PREFS_NAME,MODE_PRIVATE);
+        sharedPreferences = getApplicationContext().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
 
         // Filling UI elements
         tv_name.setText(sharedPreferences.getString("user_name",null));
@@ -114,9 +115,13 @@ public class ShowProfile extends AppCompatActivity {
         tv_bio.setText(sharedPreferences.getString("user_bio",null));
 
         // If there was not a profile pic previously
-        if(sharedPreferences.getString("user_photo",null) == null)
+        if(sharedPreferences.getString("user_photo",null) == null) {
+            // TODO debugging
+            Log.d("debug","There was no profil pic previously: restoring the default one...");
+
             // Default profile pic
             Picasso.get().load(R.mipmap.ic_launcher_round).fit().centerCrop().into(user_photo);
+        }
         else {
             // Retrieving the previous profile pic URI
             user_photo_uri = sharedPreferences.getString("user_photo", null);
