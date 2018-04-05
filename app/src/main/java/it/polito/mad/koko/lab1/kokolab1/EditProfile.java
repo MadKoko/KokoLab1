@@ -20,9 +20,12 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class EditProfile extends AppCompatActivity{
 
@@ -31,6 +34,11 @@ public class EditProfile extends AppCompatActivity{
      */
     private static final int    CAMERA_REQUEST = 0,
                                 GALLERY = 1;
+    /**
+     * Temporary profile pic file name
+     */
+    private static final String TEMP_PROFILE_PIC_NAME = "temp_profile_pic.png";
+
     /**
      * Profile pic URI
      */
@@ -97,21 +105,23 @@ public class EditProfile extends AppCompatActivity{
 
             @Override
             public void onClick(View v) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                SharedPreferences.Editor editor = sharedPreferences.edit();
+            // Making the temporary profile picture definitive
+            // copyFile();
 
-                // Saving all UI fields values in the sharedPreferences XML file.
-                editor.putString("user_name", et_name.getText().toString());
-                editor.putString("user_password", et_password.getText().toString());
-                editor.putString("user_email", et_email.getText().toString());
-                editor.putString("user_phone", et_phone.getText().toString());
-                editor.putString("user_location", et_location.getText().toString());
-                editor.putString("user_bio", et_bio.getText().toString());
-                editor.putString("user_photo",sharedPreferences.getString("user_photo_temp",null));
-                editor.apply();
+            // Saving all UI fields values in the sharedPreferences XML file.
+            editor.putString("user_name", et_name.getText().toString());
+            editor.putString("user_password", et_password.getText().toString());
+            editor.putString("user_email", et_email.getText().toString());
+            editor.putString("user_phone", et_phone.getText().toString());
+            editor.putString("user_location", et_location.getText().toString());
+            editor.putString("user_bio", et_bio.getText().toString());
+            editor.putString("user_photo",sharedPreferences.getString("user_photo_temp",null));
+            editor.apply();
 
-                // Terminating the activity
-                finish();
+            // Terminating the activity
+            finish();
             }
         });
     }
@@ -138,30 +148,31 @@ public class EditProfile extends AppCompatActivity{
                 // Launching the camera app
                 startActivityForResult(pictureActionIntent, GALLERY);
             }
-                });
+        });
 
         // 'From camera' option
         myAlertDialog.setNegativeButton("Camera",
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface arg0, int arg1) {
-                    // Requested from Android 7.0 Nougat
-                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                    StrictMode.setVmPolicy(builder.build());
+                // Requested from Android 7.0 Nougat
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.setVmPolicy(builder.build());
 
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Intent for the camera app
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-                    // Saving the image file into the file system
-                    File f = createImageFile();
+                // Saving the image file into the file system
+                File f = createImageFile();
 
-                    // The image file couldn't be created
-                    if(f == null)
-                        // The camera app won't be launched
-                        return;
+                // The image file couldn't be created
+                if(f == null)
+                    // The camera app won't be launched
+                    return;
 
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
 
-                    // Launching the camera app
-                    startActivityForResult(intent, CAMERA_REQUEST);
+                // Launching the camera app
+                startActivityForResult(intent, CAMERA_REQUEST);
                 }
             });
 
@@ -170,39 +181,52 @@ public class EditProfile extends AppCompatActivity{
     }
 
     /**
-     * Upon taking a picture with the camera, it saves the image file. following
-     * @return  the image file.
+     * It creates an empty image file before the camera app gets launched.
+     * @return  the created image file.
      */
     private File createImageFile() {
-        // Timestamp format
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-
-        // Filename format: 'JPEG' + timestamp + '_'
-        String imageFileName="JPEG"+timeStamp+"_";
-
         // Pictures directory
-        File storgeDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-        // Trying to create the image file
-        File imageFile = null;
-        try {
-            // Image file creation
-            imageFile = File.createTempFile(imageFileName,".jpg",storgeDir);
+        // TODO debugging
+        Log.d("DEBUG", "Image file name: " + storageDir + "/" + TEMP_PROFILE_PIC_NAME);
+
+        File imageFile = new File(storageDir + "/" + TEMP_PROFILE_PIC_NAME);
+
+        // Checking if a previous temporary pic already exists
+        boolean fileCreated = false;
+        if(!imageFile.exists()) {
+            /*
+            * createNewFile() method is used to creates a new, empty file
+            * mentioned by given abstract pathname if and only if a file with
+            * this name does not exist in given abstract pathname.
+            */
+            try {
+                // TODO debugging
+                Log.d("DEBUG", "Creating new file...");
+
+                fileCreated = imageFile.createNewFile();
+            } catch (IOException e) {
+                // Creating an alert dialog indicating all possible causes
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditProfile.this);
+                builder .setMessage(R.string.image_file_creation_error_message)
+                        .setTitle(R.string.image_file_creation_error_title)
+                        .setIcon(android.R.drawable.ic_dialog_alert);
+
+                // Showing the dialog to the screen
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                return null;
+            }
         }
-        // The image cannot be created
-        catch(IOException e) {
-            // Creating an alert dialog indicating all possible causes
-            AlertDialog.Builder builder = new AlertDialog.Builder(EditProfile.this);
-            builder .setMessage(R.string.image_file_creation_error_message)
-                    .setTitle(R.string.image_file_creation_error_title)
-                    .setIcon(android.R.drawable.ic_dialog_alert);
 
-            // Showing the dialog to the screen
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-            return null;
-        }
+        if(fileCreated)
+            // TODO debugging
+            Log.d("DEBUG", "Empty File successfully created");
+        else
+            // TODO debugging
+            Log.d("DEBUG", "File already existing");
 
         // Saving the new profile pic
         user_photo_profile = "file:"+imageFile.getAbsolutePath();
@@ -212,6 +236,34 @@ public class EditProfile extends AppCompatActivity{
 
         // Returning the image file created
         return imageFile;
+    }
+
+    /**
+     * File copying utility function.
+     * @param src                       file to be copied.
+     * @param dst                       copy destination.
+     * @throws FileNotFoundException    in case the source file does not exist.
+     * @throws IOException              in case it's not possible to copy the file
+     *                                  in the destination folder.
+     */
+    public static void copyFile(File src, File dst)
+            throws FileNotFoundException, IOException {
+        InputStream in = new FileInputStream(src);
+        try {
+            OutputStream out = new FileOutputStream(dst);
+            try {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            } finally {
+                out.close();
+            }
+        } finally {
+            in.close();
+        }
     }
 
     /**
@@ -268,6 +320,7 @@ public class EditProfile extends AppCompatActivity{
         et_bio.setText(sharedPreferences.getString("user_bio", null));
 
         // Restoring the profile picture
+        Picasso.get().invalidate(sharedPreferences.getString("user_photo_temp", null));
         Picasso.get().load(sharedPreferences.getString("user_photo_temp", null)).fit().centerCrop().into(user_photo);
     }
 
